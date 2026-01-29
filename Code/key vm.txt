@@ -1,0 +1,20 @@
+Debian router
+domain name  : dandyalfarisi
+root password : DandyDserver20.,
+full name : dandy alfarisi
+user name : dandy
+password : DandyDSuser20.,
+user name : dandy2
+password : Dandy2
+user name : dandy3
+password : Dandy3
+
+Ubuntu client
+computer name  : dandy_klientubuntu
+user name : dandy
+password : DandyUDuser20.,
+
+Ubuntu Server
+root password : Dandyubuntu20.,
+user name : dandy
+password : Dandyubuntu20.,

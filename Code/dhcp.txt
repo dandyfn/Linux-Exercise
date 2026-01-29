@@ -1,0 +1,87 @@
+
+---konfigurasi dhcp server---
+apt update
+apt install isc-dhcp-server -y
+nano /etc/default/isc-dhcp-server
+(isikan enp0s nya)
+nano /etc/dhcp/dhcpd.conf
+(isikan seperti ini)
+subnet 172.16.1.0 netmask 255.255.255.224 {
+  range 172.16.1.10 172.16.1.20;
+  option domain-name-servers 8.8.8.8;
+  option domain-name "google.com";
+  option routers 172.16.1.1;
+  option broadcast-address 172.16.1.255;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+systemctl restart isc-dhcp-server
+reboot
+
+---cara agar ip dhcp tetap sama---
+(masuk ke device)
+ip add (cari mac address)
+(masuk lagi ke server dhcp / router)
+nano /etc/dhcp/dhcpd.conf
+(isikan seperti ini)
+host fantasia {
+  hardware ethernet 08:00:27:21:66:83;
+  fixed-address 172.16.1.10;
+}
+systemctl restart isc-dhcp-server
+
+---cara konfigurasi dhcp klient di ubuntu---
+sudo nano /etc/netplan/00-installer-config.yaml
+(isikan ini)
+network:
+  version: 2
+  ethernets:
+    enp0s3:
+      dhcp4: true
+sudo netplan apply
+sudo dhclient -v enp0s3 (paksa kalua belum dapat)
+
+---cara konfigurasi dhcp klient di debian---
+sudo dhclient -r  (hapus dhcp lama)
+sudo dhclient
+ip a
+ip route  (cek)
+
+
+---cara konfigurasi dhcp lebih dari 1---
+nano /etc/default/isc-dhcp-server
+(isikan enp0s nya yang baru dengan cara seperti ini : INTERFACESv4="enpos3 enpos9")
+nano /etc/dhcp/dhcpd.conf 
+subnet 172.16.1.0 netmask 255.255.255.0 {
+  range 172.16.1.20 172.16.1.50;
+  option domain-name-servers 8.8.8.8;
+  option domain-name "google.com";
+  option routers 172.16.1.1;
+  option broadcast-address 172.16.1.255;
+  default-lease-time 600;
+  max-lease-time 7200;
+
+  host fantasia_172 {
+    hardware ethernet 08:00:27:21:66:83;
+    fixed-address 172.16.1.10;
+  }
+}
+subnet 20.20.20.0 netmask 255.255.255.0 {
+  range 20.20.20.10 20.20.20.50;
+  option domain-name-servers 8.8.8.8;
+  option domain-name "google.com";
+  option routers 20.20.20.1;
+  option broadcast-address 20.20.20.255;
+  default-lease-time 600;
+  max-lease-time 7200;
+
+  host fantasia_20 {
+    hardware ethernet 08:00:27:7f:9c:78;
+    fixed-address 20.20.20.2;
+  }
+}
+(buat host fantasia dan pastikan nama host fantasia berbeda
+dengan subnet sebelumnya. lalu masukan host fantasia ke 
+masing masing subnet)
+dhcpd -t
+sudo systemctl restart isc-dhcp-server
