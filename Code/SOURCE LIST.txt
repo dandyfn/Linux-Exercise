@@ -13,3 +13,5 @@ Zabbix : https://www.zabbix.com/download
 vm ware : https://www.vmware.com/products/desktop-hypervisor
 
 gns3 : https://gns3.com/software
+
+mininet : https://mininet.org/download/
