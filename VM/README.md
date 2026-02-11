@@ -1,8 +1,9 @@
-source vm debian :
+Debian Dekstop :  https://mega.nz/folder/f4xmjIpI#m3XcekpLrA8Efe-CGOngqw
 
-https://drive.google.com/drive/folders/1Q652GpYf4NH2Nnxgh67-mySaYFH1mRWO?usp=drive_link
+Debian Server :  https://mega.nz/folder/yhwzUBDL#sCzMrlQbWCYJKVg7Fv-M7Q
 
+Debian Router :  https://mega.nz/folder/Lh5y3bZK#Rb7BQzZ1zcCUkT-y10sALg
 
-source vm ubuntu :
+Ubuntu Server :  https://mega.nz/folder/mgZTiTQT#2tRYMpPPNvM5BIz5y4o-Tw
 
-https://drive.google.com/drive/folders/1e_Up35G7pDMIYbdNMfun-5A22fyphTZW?usp=drive_link
+Ubuntu Client :  https://mega.nz/folder/b5pQgbba#h7I9T5hDyxcKPXyCYydpaw
