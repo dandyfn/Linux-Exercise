@@ -1,0 +1,34 @@
+---Set IP host---
+h1: 10.0.1.1/24
+h2: 10.0.1.2/24
+
+h4: 10.0.2.1/24
+h5: 10.0.2.2/24
+
+
+
+---Set default gateway di host---
+h1 route add default gw 10.0.1.254
+h2 route add default gw 10.0.1.254
+
+h4 route add default gw 10.0.2.254
+h5 route add default gw 10.0.2.254
+
+
+
+---Set IP router---
+r2 ifconfig r2-eth0 10.0.1.254/24
+r2 ifconfig r2-eth1 10.0.2.254/24
+
+
+---Aktifkan IP forwarding di r2---
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+---cek default gateway---
+h1 ip route
+r2 ip route
+
+
+---Cek apakah routing AKTIF---
+r2 sysctl net.ipv4.ip_forward
+r2 sysctl -w net.ipv4.ip_forward=1  (cara aktifkan routing)

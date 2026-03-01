@@ -1,0 +1,153 @@
+---unduh dan running mininet - miniedit----
+sudo apt update
+sudo apt upgrade -y
+sudo reboot
+sudo apt install -y git python3 python3-pip xterm openvswitch-switch net-tools
+cd ~ git clone https://github.com/mininet/mininet.git
+cd mininet
+sudo ./util/install.sh -a
+mn --test pingall
+ls ~/mininet/examples/miniedit.py
+sudo python3 ~/mininet/examples/miniedit.py
+sudo mn -c                              (menghapus konfigurasi topologi di miniedit)
+sudo mn --topo single,2 --switch=lxbr   (memunculkan mininet> di cli)
+
+---instal ovs---
+sudo apt update
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils     (install paket libvrt)
+sudo apt install openvswitch-switch         (install ovs)
+virsh --version        (cek virsh)
+/usr/bin/qemu-system-x86_64 --version        (cek qemu)
+sudo systemctl status openvswitch-switch       (cek apakah ovs jalan)
+sudo ovs-vsctl show        (cek apakah ada ovs)
+sudo ovs-vsctl del-br s1    (membersihkan ovs konfigurasi lama)
+
+
+---hapus mninet---
+find /usr -name "mininet"     (cari tahu dimana letak mininetnya)
+sudo rm -rf /usr/local/lib/python3.8/dist-packages/mininet        (path yang sudah tau dihapus disini)
+sudo rm -f /usr/local/bin/mn
+sudo rm -f /usr/local/bin/mnexec
+sudo rm -f /usr/local/bin/ovs-*
+rm -rf ~/mininet
+
+
+
+---install mininet paket(ga pakek git)---
+sudo apt update
+sudo apt install mininet
+sudo apt install mininet-examples
+sudo apt install python-tk
+which mn   (cek dimana mininetnya)
+sudo mn   (kalua muncuk mininet> instalasi berhasil)
+exit
+find / -name miniedit.py 2>/dev/null
+sudo python2 /usr/lib/python2.7/dist-packages/mininet/examples/miniedit.py
+
+
+
+---buat topologi sederhana di vm---
+sudo ip netns add h1       (buat host 1)
+sudo ip netns add h2       (buat host 2)
+sudo ip netns show         (cek apakah hostnya sudah ada)
+sudo ovs-vsctl add-br s1        (buat switch)
+sudo ip link add h1-enp0s8 type veth peer name s1-eth1          (buat kabel 2)
+sudo ip link add h2-enp0s8 type veth peer name s1-eth2          (buat kabel 2)
+sudo ip link set h1-enp0s8 netns h1     (sambungkan kabel di host 1)
+sudo ip link set h2-enp0s8 netns h2     (sambungkan kabel di host 2)
+sudo ip netns exec h1 ip link show       (cek apakah kabelnya sudah tersambung di host)
+sudo ip netns exec h2 ip link show       (cek apakah kabelnya sudah tersambung di host)
+sudo ovs-vsctl add-port s1 s1-eth1      (sambungkan kabel di switch port 1)
+sudo ovs-vsctl add-port s1 s1-eth2      (sambungkan kabel di switch port 2)
+sudo ovs-vsctl show                 (cek apakah kabelnya sudah tersambung di switch)
+sudo ovs-vsctl set-controller s1 tcp:127.0.0.1       (kasih tau controlernya dimana)
+sudo controller ptcp:&
+sudo ovs-vsctl show
+sudo ip netns exec h1 ifconfig h1-enp0s8 10.0.0.1        (konfigurasi ip di port host)
+sudo ip netns exec h2 ifconfig h2-enp0s8 10.0.0.2         (konfigurasi ip di port host)
+sudo ip netns exec h1 ifconfig lo up                     (nyalakan host)
+sudo ip netns exec h2 ifconfig lo up                     (nyalakan host)
+sudo ifconfig s1-eth1 up                                  (nyalakan port switch)
+sudo ifconfig s1-eth2 up                                  (nyalakan port switch)
+sudo ip netns exec h1 ping -c4 10.0.0.2                   (ping)
+
+
+
+---install floodlight---
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+java -version
+javac -version
+sudo apt-get install build-essential ant maven python-dev
+git clone https://github.com/floodlight/floodlight.git
+cd floodlight/
+git checkout v1.2
+git submodule init
+git submodule update
+ant
+sudo mkdir /var/lib/floodlight
+sudo chmod 777 /var/lib/floodlight
+
+
+---menjalankan floodlight---
+cd floodlight/
+java -jar target/floodlight.jar
+(kemudian buka terminal baru untuk membuat topologi tanpa mininet)
+sudo mn -c
+sudo mn --topo tree,2 --controller=remote,ip=127.0.0.1,port=6653 --switch ovsk,protocols=OpenFlow13 (contoh bentuk topologi, dan harus memakai OpenFlow13)
+
+
+---menghapus java---
+sudo update-alternatives --remove-all java
+sudo update-alternatives --remove-all javac
+sudo apt purge openjdk-* -y
+sudo apt purge default-jdk -y
+sudo apt autoremove -y
+ls /usr/lib/jvm     (cek apakah masih ada java)
+nano ~/.bashrc
+(hapus ini)
+export JAVA_HOME=...
+export PATH=$JAVA_HOME/bin:...
+(tambahkan dengan versi terbaru atau yang diinginkan)
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64    (contoh vesi terbaru)
+export PATH=$JAVA_HOME/bin:$PATH
+(keluar)
+java -version
+
+
+
+---running miniedit dengan floodlight---
+(buka terminal untuk running floodlight)
+java -jar target/floodlight.jar
+(buka terminal lain untuk running miniedit)
+sudo python2 /usr/lib/python2.7/dist-packages/mininet/examples/miniedit.py
+(pada prefence edit ke cli dan Default Terminal = xterm)
+(buat topologi dan tambahkan topologi controller)
+(pada controller edit seperti dibawah ini)
+Controller Type: Remote Controller
+IP Address: 127.0.0.1
+Port: 6653
+(klik run, maka pada terminal akan muncuk mininet>)
+
+
+---memaksa mati mininet---
+sudo pkill -f miniedit
+sudo pkill -f mn
+
+
+---install dan jalankan onos---
+sudo apt-get update
+sudo apt-get install software-properties-common -y
+sudo apt-get install oracle-java8-installer
+sudo mkdir -p /opt
+cd /opt
+sudo wget https://repo1.maven.org/maven2/org/onosproject/onos-releases/1.14.0/onos-1.14.0.tar.gz
+export TERM=xterm
+sudo tar -xvzf onos-1.14.0.tar.gz
+sudo mv onos-1.14.0 onos
+./onos/bin/onos-service start
+http://127.0.0.1:8181/onos/ui
+username: onos
+password: rocks
+

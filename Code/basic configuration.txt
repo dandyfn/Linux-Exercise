@@ -1,0 +1,35 @@
+---hostname---
+(ganti hostname debian)
+su -
+hostnamectl set-hostname RTR-Debian
+
+(ganti hostname ubuntu)
+sudo hostnamectl set-hostname RTR-Debian
+
+cek dan ubah name host (dns)
+su-
+nano /etc/hosts
+
+ip address    /untuk mengeck adapter dan ip address/  
+
+---konfigurasi ip di interface di debian---
+su-
+nano /etc/network/interfaces
+(isikan ip, mask dan gateway)
+systemctl restart networking
+ifup enp0s3
+
+ip route add default via 10.10.10.1 dev enp0s3      /tambahkan kode ini jika gateway tidak bisa ditambahkan/
+
+---konfigurasi ip di interface di ubuntu---
+sudo nano /etc/netplan/00-installer-config.yaml
+(isikan ip, mask dan gateway)
+sudo netplan apply
+
+---konfig agar router bisa routing---
+su -
+nano /etc/sysctl.d/99-ip-forward.conf       (file ini)
+net.ipv4.ip_forward = 1        (isikan ini)
+sysctl --system
+sysctl net.ipv4.ip_forward        (cek, hasil harusnya : net.ipv4.ip_forward = 1)
+

@@ -1,0 +1,59 @@
+---unduh dan running mininet - miniedit----
+sudo apt update
+sudo apt upgrade -y
+sudo reboot
+sudo apt install -y git python3 python3-pip xterm openvswitch-switch net-tools
+cd ~ git clone https://github.com/mininet/mininet.git
+cd mininet
+sudo ./util/install.sh -a
+mn --test pingall
+ls ~/mininet/examples/miniedit.py
+sudo python3 ~/mininet/examples/miniedit.py
+sudo mn -c                              (menghapus konfigurasi topologi di miniedit)
+sudo mn --topo single,2 --switch=lxbr   (memunculkan mininet> di cli)
+
+
+---hapus mninet---
+find /usr -name "mininet"     (cari tahu dimana letak mininetnya)
+sudo rm -rf /usr/local/lib/python3.8/dist-packages/mininet        (path yang sudah tau dihapus disini)
+sudo rm -f /usr/local/bin/mn
+sudo rm -f /usr/local/bin/mnexec
+sudo rm -f /usr/local/bin/ovs-*
+rm -rf ~/mininet
+
+
+
+---install mininet paket(ga pakek git)---
+sudo apt update
+sudo apt install mininet
+sudo apt install mininet-examples
+sudo apt install python-tk
+which mn   (cek dimana mininetnya)
+sudo mn   (kalua muncuk mininet> instalasi berhasil)
+exit
+find / -name miniedit.py 2>/dev/null
+sudo python2 /usr/lib/python2.7/dist-packages/mininet/examples/miniedit.py
+
+
+
+
+---memaksa mati mininet---
+sudo pkill -f miniedit
+sudo pkill -f mn
+
+
+---install dan jalankan onos---
+sudo apt-get update
+sudo apt-get install software-properties-common -y
+sudo apt install openjdk-8-jdk -y
+sudo mkdir -p /opt
+cd /opt
+sudo wget https://repo1.maven.org/maven2/org/onosproject/onos-releases/1.14.0/onos-1.14.0.tar.gz
+export TERM=xterm
+sudo tar -xvzf onos-1.14.0.tar.gz
+sudo mv onos-1.14.0 onos
+./onos/bin/onos-service start
+http://127.0.0.1:8181/onos/ui
+username: onos
+password: rocks
+

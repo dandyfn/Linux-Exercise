@@ -1,0 +1,39 @@
+
+---install floodlight---
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+java -version
+javac -version
+sudo apt-get install build-essential ant maven python-dev
+git clone https://github.com/floodlight/floodlight.git
+cd floodlight/
+git checkout v1.2
+git submodule init
+git submodule update
+ant
+sudo mkdir /var/lib/floodlight
+sudo chmod 777 /var/lib/floodlight
+
+
+---menjalankan floodlight---
+cd floodlight/
+java -jar target/floodlight.jar
+(kemudian buka terminal baru untuk membuat topologi tanpa mininet)
+sudo mn -c
+sudo mn --topo tree,2 --controller=remote,ip=127.0.0.1,port=6653 --switch ovsk,protocols=OpenFlow13 (contoh bentuk topologi, dan harus memakai OpenFlow13)
+
+
+
+---running miniedit dengan floodlight---
+(buka terminal untuk running floodlight)
+java -jar target/floodlight.jar
+(buka terminal lain untuk running miniedit)
+sudo python2 /usr/lib/python2.7/dist-packages/mininet/examples/miniedit.py
+(pada prefence edit ke cli dan Default Terminal = xterm)
+(buat topologi dan tambahkan topologi controller)
+(pada controller edit seperti dibawah ini)
+Controller Type: Remote Controller
+IP Address: 127.0.0.1
+Port: 6653
+(klik run, maka pada terminal akan muncuk mininet>)

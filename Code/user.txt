@@ -1,0 +1,42 @@
+
+useradd → membuat user baru secara manual tanpa konfigurasi interaktif.
+userdel → menghapus user dari sistem.
+usermod → mengubah konfigurasi user yang sudah ada (group, shell, dll).
+users → menampilkan daftar user yang sedang login.
+passwd greesel → mengganti atau membuat password untuk user greesel.
+useradd -m -s /bin/bash greesel → membuat user greesel lengkap dengan home directory dan shell bash.
+adduser Michie → membuat user Michie secara interaktif (password, info user).
+ 
+---membuat user ---
+su -
+useradd
+passwd greesel
+
+---membuat user dengan bash---
+useradd -m -s /bin/bash greesel
+
+
+---konfigurasi ulang data user---
+chfn dandy
+username dandy :
+Full Name []: Dandy Al-Farisi Natanegara
+Room Number []: 
+Work Phone []: 085707593597
+Home Phone []: 
+
+---membuat group dan memasukan user ke group---
+cat /etc/group
+su -
+groupadd group1
+id user1
+usermod -G group1 user1
+usermod -aG group1 user1
+
+cat /etc/group → menampilkan seluruh group yang ada di sistem.
+groupadd group1 → membuat group baru bernama group1.
+id user → menampilkan UID, GID, dan group milik user tertentu.
+usermod -G group1 user1 → mengatur user user1 hanya berada di group group1 (menghapus group lain).
+usermod -aG group1 user1 → menambahkan user1 ke group group1 tanpa menghapus group lain.
+userdel -r user → menghapus user beserta home directory dan mail-nya.
+groupdel group2 → menghapus group bernama group2.
+sudo deluser --remove-home --remove-all-files namauser

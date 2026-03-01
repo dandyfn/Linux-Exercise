@@ -1,0 +1,22 @@
+---cara mengatasi Virtualize Intel VT-x/EPT or AMD-V/RVI di VMware gagal---
+1. Cek Virtualization di Windows
+- buka task manager
+- cari performance
+- cari Virtualization lalu on kan
+
+2. Matikan Hyper-V
+- Buka Command Prompt Run as Administrator,
+- bcdedit /set hypervisorlaunchtype off
+
+3. matikan fitur Windows features
+- Control Panel → Programs → Turn Windows features on or off
+- Uncheck: Hyper-V, Windows Hypervisor Platform, Virtual Machine Platform, Windows Sandbox
+- restart laptop
+
+4. MATIKAN MEMORY INTEGRITY
+- Klik Start
+- Ketik: Windows Security
+- Klik Device Security
+- Klik Core Isolation Details
+- Kalau Memory Integrity = On, matikan.
+- Restart laptop.

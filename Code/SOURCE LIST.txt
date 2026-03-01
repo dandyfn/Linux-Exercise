@@ -1,0 +1,19 @@
+ubuntu : https://releases.ubuntu.com/
+
+Debian : https://www.debian.org/CD/http-ftp/
+
+putty : https://putty.org/index.html
+
+microsof : https://www.microsoft.com/en-us/software-download/windows11
+
+mikrotik : https://mikrotik.com/download
+
+Zabbix : https://www.zabbix.com/download
+
+vm ware : https://www.vmware.com/products/desktop-hypervisor
+
+gns3 : https://gns3.com/software
+
+mininet : https://mininet.org/download/
+
+eve ng : https://www.eve-ng.net/index.php/download/#DL-COMM

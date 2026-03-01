@@ -1,0 +1,27 @@
+---mengganti kepemilikan file---
+-su
+ls -l
+chown newuser:newgroup file
+
+---mengganti ijin file---
+-su
+ls -l
+chmod g+w file
+
+---mengganti kepemilikan direktori---
+-su
+ls -l
+chown newuser:newgroup direktori
+
+
+chown newuser:newgroup file → mengubah pemilik dan group sebuah file.
+chown newuser:newgroup direktori → mengubah pemilik dan group sebuah direktori.
+chown -R newuser:newgroup direktori → mengubah pemilik dan group seluruh isi direktori secara rekursif.
+chown -R newuser:newgroup file → mengubah pemilik dan group file (opsi -R tidak berdampak karena file tunggal).
+chmod g+w file → menambahkan izin tulis untuk group pada file.
+./execute.file → menjalankan file sebagai program dari direktori saat ini.
+
+---mengganti kepemilikan dan ijin menggunakan angka---
+-su
+chmod 755 /home/user
+chmod -R 755 /home/user

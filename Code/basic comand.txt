@@ -1,0 +1,145 @@
+---perintah dasar---
+ls  /Perintah untuk menampilkan daftar file dan folder di direktori tempat kamu sedang berada./
+sudo dhclient -r enp0s3  /melepaskan (release) IP address dari DHCP server pada interface enp0s3 dan memberitahukann ip nya ke DHCP server/
+sudo dhclient enp0s3    /Perintah ini meminta IP address baru dari DHCP server untuk interface enp0s3/
+sudo ip addr flush dev enp0s3   /Perintah ini menghapus semua IP address (IPv4 & IPv6) yang terpasang pada interface enp0s3./
+whoami      /Menampilkan nama user yang sedang aktif saat ini.
+hostname    /Menampilkan nama host (nama komputer) sistem.
+hostnamectl      /Menampilkan dan mengelola informasi hostname serta detail sistem.
+dir      /Menampilkan daftar file dan folder dalam direktori (mirip ls).
+pwd     /Menampilkan path direktori kerja saat ini.
+cd       /Digunakan untuk berpindah direktori.
+cat     /Menampilkan isi file ke layar terminal.
+su      /Digunakan untuk berpindah user, biasanya ke user root.
+sudopasswd       /Digunakan untuk mengubah password user (biasanya root atau user lain) dengan hak administrator./
+ls        /Menampilkan daftar file dan folder dalam direktori saat ini./
+cd ..      /Digunakan untuk berpindah ke direktori induk (satu level ke atas)./
+su user       /Digunakan untuk berpindah ke user bernama user./
+touch       /Digunakan untuk membuat file kosong baru atau memperbarui timestamp file./
+ls -l       /Menampilkan daftar file dan folder secara detail (izin, owner, ukuran, dan waktu)./
+ls -a       /Menampilkan semua file termasuk file tersembunyi (yang diawali tanda titik)./
+ls -R       /Menampilkan isi direktori beserta seluruh subdirektorinya secara rekursif./
+ls -la       /Menampilkan daftar file secara detail termasuk file tersembunyi./
+mkdir dir_a dir_b         /Membuat dua direktori baru bernama dir_a dan dir_b./
+mkdir /home/user/Downloads/Favorite_Download/      /Membuat direktori Favorite_Download pada path tersebut (akan gagal jika parent belum ada)./
+mkdir -p /Project/Draft/Myproject/            /Membuat direktori beserta seluruh parent directory yang belum ada./
+cp Documents/b.txt /home/user/destination      /Menyalin file b.txt ke direktori destination./
+cp Documents/a.txt Documents/b.txt /destonation       /Menyalin dua file sekaligus ke direktori tujuan./
+cp *.txt destination       /Menyalin semua file berekstensi .txt ke folder destination./
+cp -r dir_a dir_b         /Menyalin direktori dir_a beserta isinya ke dalam dir_b./
+history       /Menampilkan riwayat perintah yang pernah dijalankan di terminal./
+mv direktori/a.txt direktori/new.txt         /Mengganti nama file a.txt menjadi new.txt dalam direktori yang sama./
+mv direktori/a.txt newdirektori/new.txt       /Memindahkan sekaligus mengganti nama file ke direktori lain./
+mv direktori/a.txt newdirektori/          Memindahkan file ke direktori lain tanpa mengubah namanya./
+mv dir_a new_a       /Mengganti nama direktori dir_a menjadi new_a./
+mv direktori/dir_a newdirektori/      Memindahkan direktori dir_a ke dalam direktori newdirektori./
+rm      /Digunakan untuk menghapus file (tidak bisa menghapus direktori tanpa opsi)./
+rmdir       /Digunakan untuk menghapus direktori kosong./
+rm -rf      /Menghapus direktori beserta seluruh isinya secara paksa tanpa konfirmasi./
+rm Documents/catatan.txt       /Menghapus file catatan.txt di folder Documents./
+rm Documents/file1.txt Documents/file2.txt       /Menghapus beberapa file sekaligus./
+rmdir project/Latihan      /Menghapus direktori latihan jika dalam kondisi kosong./
+ls dira ; ls dirb    /Menjalankan dua perintah ls secara berurutan untuk menampilkan isi dira lalu dirb./
+clear       /Membersihkan tampilan layar terminal./
+(tab pertama dibuat untuk fitur auto complite, tab kedua untuk menampilkan semua kemungkinan direktori
+!11        /Menjalankan ulang perintah ke-11 dari history./
+!cd ..    /Menjalankan ulang perintah terakhir yang diawali cd .../
+!!        /Menjalankan ulang perintah terakhir./
+Ctrl + A   /Memindahkan kursor ke awal baris perintah./
+Ctrl + E      /Memindahkan kursor ke akhir baris perintah./
+Ctrl + W       /Menghapus satu kata ke arah kiri kursor./
+Ctrl + R      /mencari perintah sebelumnya di history secara interaktif./
+Ctrl + L      /Membersihkan layar terminal (setara clear)./
+ls > output.txt      Menyimpan hasil perintah ls ke file output.txt (menimpa isi lama)./
+ls >> output.txt      /Menambahkan hasil ls ke akhir file output.txt./
+ls wrong 2> error.txt         /Menyimpan pesan error ke file error.txt./
+ls wrong 2>> error.txt        /Menambahkan pesan error ke akhir file error.txt./
+
+
+---buat nama dns server bisa dipanggil pakai domain---
+mkdir -p /var/www/dandy.lab
+(isikan ini)
+<VirtualHost *:80>
+    ServerName dandy.lab
+    ServerAlias www.dandy.lab
+    DocumentRoot /var/www/dandy.lab
+
+    <Directory /var/www/dandy.lab>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/dandy.lab_error.log
+    CustomLog ${APACHE_LOG_DIR}/dandy.lab_access.log combined
+</VirtualHost>
+a2ensite dandy.lab.conf
+systemctl reload apache2
+http://dandy.lab
+
+---install apache server---
+sudo apt install apache2
+
+---ubah index.html---
+cd /etc/apache2
+cd /var/www/html
+cp index.html new.html
+(isikan kode html)
+
+---virtual host port based---
+cd /etc/apache2/
+cd sites-available
+nano new.conf
+(ubah ini port dan DocumentRoot)
+Listen 82
+<VirtualHost *:82>
+    ServerName dandy.lab
+    DocumentRoot /var/www/html/sonichi
+
+    <Directory /var/www/html/sonichi>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+cd
+cd /etc/apache2
+cd /var/www/html
+mkidir new
+nano /new/index.html (index.html isikan kode html)
+a2ensite new.conf
+systemctl restart apache2
+apachectl -S
+
+---buat default virtual host port 80---
+sudo nano /etc/hosts
+10.10.10.2   dandy.lab (isikan ini)
+a2dissite 000-default.conf
+cd /etc/apache2/
+cd sites-available 
+nano dandy.lab.conf
+<VirtualHost *:80>
+    ServerName dandy.lab
+    ServerAlias www.dandy.lab
+    DocumentRoot /var/www/html/dandy
+
+    <Directory /var/www/html/dandy>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+cd
+cd /etc/apache2
+cd /var/www/html
+mkidir dandy
+nano /dandy/index.html (index.html isikan kode html)
+a2ensite dandy.lab.conf
+systemctl restart apache2
+apachectl -S
+
+
+
+Mode	    Internet	   VM ↔ VM     	  Host ↔ VM	  IP dari
+NAT	      ✅	      ❌	      ❌	VirtualBox
+NAT Network   ✅	      ✅	      ❌	VirtualBox
+Host-only     ❌	      ✅	      ✅	VirtualBox
+Internal      ❌	      ✅	      ❌	VirtualBox
+

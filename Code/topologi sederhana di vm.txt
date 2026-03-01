@@ -1,0 +1,36 @@
+---instal ovs---
+sudo apt update
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils     (install paket libvrt)
+sudo apt install openvswitch-switch         (install ovs)
+virsh --version        (cek virsh)
+/usr/bin/qemu-system-x86_64 --version        (cek qemu)
+sudo systemctl status openvswitch-switch       (cek apakah ovs jalan)
+sudo ovs-vsctl show        (cek apakah ada ovs)
+sudo ovs-vsctl del-br s1    (membersihkan ovs konfigurasi lama)
+
+
+
+---buat topologi sederhana di vm---
+sudo ip netns add h1       (buat host 1)
+sudo ip netns add h2       (buat host 2)
+sudo ip netns show         (cek apakah hostnya sudah ada)
+sudo ovs-vsctl add-br s1        (buat switch)
+sudo ip link add h1-enp0s8 type veth peer name s1-eth1          (buat kabel 2)
+sudo ip link add h2-enp0s8 type veth peer name s1-eth2          (buat kabel 2)
+sudo ip link set h1-enp0s8 netns h1     (sambungkan kabel di host 1)
+sudo ip link set h2-enp0s8 netns h2     (sambungkan kabel di host 2)
+sudo ip netns exec h1 ip link show       (cek apakah kabelnya sudah tersambung di host)
+sudo ip netns exec h2 ip link show       (cek apakah kabelnya sudah tersambung di host)
+sudo ovs-vsctl add-port s1 s1-eth1      (sambungkan kabel di switch port 1)
+sudo ovs-vsctl add-port s1 s1-eth2      (sambungkan kabel di switch port 2)
+sudo ovs-vsctl show                 (cek apakah kabelnya sudah tersambung di switch)
+sudo ovs-vsctl set-controller s1 tcp:127.0.0.1       (kasih tau controlernya dimana)
+sudo controller ptcp:&
+sudo ovs-vsctl show
+sudo ip netns exec h1 ifconfig h1-enp0s8 10.0.0.1        (konfigurasi ip di port host)
+sudo ip netns exec h2 ifconfig h2-enp0s8 10.0.0.2         (konfigurasi ip di port host)
+sudo ip netns exec h1 ifconfig lo up                     (nyalakan host)
+sudo ip netns exec h2 ifconfig lo up                     (nyalakan host)
+sudo ifconfig s1-eth1 up                                  (nyalakan port switch)
+sudo ifconfig s1-eth2 up                                  (nyalakan port switch)
+sudo ip netns exec h1 ping -c4 10.0.0.2                   (ping)

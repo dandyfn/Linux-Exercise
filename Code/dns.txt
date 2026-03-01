@@ -1,0 +1,92 @@
+
+---buat dns server---
+apt update
+apt install bind9 dnsutils -y
+ls /etc/bind
+nano /etc/bind/named.conf
+(Isi PERSIS seperti ini:)
+include "/etc/bind/named.conf.options";
+include "/etc/bind/named.conf.local";
+include "/etc/bind/named.conf.default-zones";
+nano /etc/bind/named.conf.options
+(Isi PERSIS seperti ini:)
+options {
+        directory "/var/cache/bind";
+
+        recursion yes;
+        allow-query { any; };
+
+        forwarders {
+                8.8.8.8;
+                1.1.1.1;
+        };
+
+        dnssec-validation no;
+
+        listen-on { any; };
+        listen-on-v6 { any; };
+};
+named-checkconf
+systemctl restart bind9
+systemctl status bind9
+dig google.com @127.0.0.1
+(masuk ke klient yang ingin dikonfigurasi dns)
+agar dns server bisa dikonfigurasi secara permanen,
+konfigurasikan dengan cara yang sama dengan konfigurasi
+ip address mengunakan yaml di ubuntu dan interfaces di Debian.
+kalau memakai dhcp maka konfigurasikan di dhcp servernya
+        
+---buat authortatif dns server---
+
+nano /etc/bind/named.conf.local
+(isikan ini)
+zone "dandy.lab" {
+    type master;
+    file "/etc/bind/db.dandy.lab";
+};
+
+zone "10.10.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.10.10.10";
+};
+
+nano /etc/bind/db.dandy.local
+(isikan ini)
+$TTL 604800
+@   IN  SOA ns.dandy.lab. admin.dandy.lab. (
+        2026011901
+        604800
+        86400
+        2419200
+        604800
+)
+
+@       IN  NS  ns.dandy.lab.
+ns      IN  A   10.10.10.2
+@       IN  A   10.10.10.2
+www     IN  A   10.10.10.2
+
+
+nano /etc/bind/db.10.10.10
+$TTL 604800
+@   IN  SOA ns.dandy.lab. admin.dandy.lab. (
+        2026011901
+        604800
+        86400
+        2419200
+        604800
+)
+
+@   IN  NS  ns.dandy.lab.
+2   IN  PTR ns.dandy.lab.
+
+chown root:bind /etc/bind/db.dandy.lab
+chown root:bind /etc/bind/db.10.10.10
+chmod 644 /etc/bind/db.*
+named-checkconf
+named-checkzone dandy.lab /etc/bind/db.dandy.lab
+named-checkzone 10.10.10.in-addr.arpa /etc/bind/db.10.10.10
+systemctl restart bind9
+systemctl status bind9
+dig @10.10.10.3 jktpage.com (dig @ip dns server nama domain dns server)
+

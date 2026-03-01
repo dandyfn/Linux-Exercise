@@ -1,0 +1,46 @@
+---buat samba server---
+sudo apt update
+sudo apt install samba -y
+smbd --version
+systemctl status smbd
+sudo mkdir -p /direktori
+sudo chown -R dandy:dandy /direktori
+sudo chmod 0777 /direktori
+sudo nano /etc/samba/smb.conf
+(hapus semua isi smb.conf lalu isikan ini)
+[global]
+   workgroup = WORKGROUP
+   security = user
+   map to guest = never
+
+[share]
+   path = /direktori
+   browseable = yes
+   writable = yes
+   read only = no
+   valid users = dandy
+   create mask = 0666
+   directory mask = 0777
+testparm
+sudo smbpasswd -a dandy (password smb dandy = 123)
+sudo systemctl restart smbd
+sudo systemctl restart nmbd
+systemctl status smbd
+
+
+---buka samba di klient---
+sudo apt install smbclient
+sudo apt install cifs-utils
+smbclient -L 10.10.10.2
+mkdir smbfolderimport
+sudo mount -t cifs //10.10.10.2/share /home/dandy/smbfolderimport \-o username=dandy,password=123,vers=3.0,uid=1000,gid=1000
+
+
+---buat permanen samba di klient---
+sudo nano /etc/fstab
+//10.10.10.2/share  /home/dandy/smbfolderimport cifs username=dandy,password=123,vers=3.0,uid=1000,gid=1000,file_mode=0666,dir_mode=0777  0  0
+sudo systemctl daemon-reload
+ls /home/dandy/smbfolderimport
+mount | grep cifs
+
+

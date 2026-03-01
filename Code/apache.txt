@@ -1,0 +1,55 @@
+---virtual host domain based---
+cd /etc/apache2
+cd /var/www/html
+mkdir -p /var/www/domain/dandy
+nano /var/www/domain/dandy/index.html
+(lalu isikan html)
+cd
+cd /etc/apache2
+cd sites-available
+nano dandy-domain.conf
+(isikan file ini)
+<VirtualHost *:80>
+    ServerName dandy.lab
+    ServerAlias www.dandy.lab
+    DocumentRoot /var/www/domain/dandy
+
+    <Directory /var/www/domain/dandy>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+a2ensite dandy-domain.conf
+a2dissite 000-default.conf
+systemctl restart apache2
+apachectl -S
+(masuk ke klient)
+nano /etc/host
+(isikan ini)
+IP_SERVER   dandy.lab
+
+---virtual host subdomain based---
+/etc/bind/db.dandy.lab
+(tambahkan baris ini)
+sonichi     IN  A   10.10.10.2
+named-checkzone dandy.lab /etc/bind/db.dandy.lab
+systemctl restart bind9
+mkdir -p /var/www/sub-sonichi
+nano /var/www/sub-sonichi/index.html
+(isi dengan index html)
+cd
+cd /etc/apache2/
+cd sites-available 
+nano sonichi-sub.conf
+(isi dengan ini)
+<VirtualHost *:80>
+    ServerName sonichi.dandy.lab
+    DocumentRoot /var/www/sub-sonichi
+
+    <Directory /var/www/sub-sonichi>
+        Require all granted
+    </Directory>
+</VirtualHost>
+a2ensite sonichi-sub.conf
+systemctl reload apache2
+apachectl -S

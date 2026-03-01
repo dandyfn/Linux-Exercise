@@ -1,0 +1,54 @@
+---cara ssh--
+ssh usernam@10.10.10.1
+
+---instal ssh---
+apt install openssh-server
+
+---ubah port ssh---
+ssh usernam@10.10.10.1    (masuk remote ssh)
+nano /etc/ssh/sshd_config
+systemctl restart ssh
+exit
+exit   (keluar dari remote ssh)
+ssh usernam@10.10.10.1 -p 23   (masuk remote ssh pakai port baru)
+
+---ijinkan beberapa user saja untuk akses ssh---
+nano /etc/ssh/sshd_config
+AllowUsers user1 
+systemctl restart ssh
+
+---public private key ssh (buat ssh yidak memakai pasword username)---
+ssh-keygen
+ssh-copy-id user@10.10.10.2 -p 22
+ssh-copy-id -p 22 user@10.10.10.2 (kalua di debian)
+
+sandi pashprased Debian dan ubuntu server : 123456
+sandi pashprased Debian router : 12345
+
+cat .ssh/id_rsa.pub         /cek public key klient/
+cat .ssh/authorized_keys       /cek public key server/
+
+---mengkopi public key ke server lain---
+(kopi yang ada disini)
+cat .ssh/id_rsa.pub
+
+(masuk ke cli server, kopikan ke file ini)
+mkdir .ssh
+nano .ssh/authorized_keys
+
+---ssh public key dari host ke vm---
+instal putty generator
+isikan pashprased
+simpab file
+buka vm
+buat direktori .ssh
+buat file authorized_keys
+buka file ppk
+isikan isinya ke authorized_keys
+tambahkan ssh-rsa
+simpan lalu jalankan putty
+
+---login ssh tanpa passphrase---
+ssh-agent /bin/bash
+ssh-add
+

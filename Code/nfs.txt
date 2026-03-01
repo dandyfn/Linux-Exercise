@@ -1,0 +1,26 @@
+---instal nfs server---
+apt update
+apt install nfs-kernel-server
+
+---buat nfs---
+mkdir -p /direktori
+chmod 755 /direktori
+chown nobody:nogroup /direktori
+nano /etc/exports
+(isikan ini)
+/direktori *(rw,sync,no_subtree_check)
+exportfs -ra
+systemctl restart nfs-kernel-server
+
+---mengakses nfs---
+nfs install apt-common
+showmount -e 10.10.10.2
+mkdir newdir
+su -
+mount -t nfs 10.10.10.2:/direktori /home/dandy/newdir
+
+---cara agar mountnfs permanen di server---
+sudo nano /etc/fstab
+(isikan ini)
+10.10.10.2:/direktori   /home/dandy/Import     nfs     _netdev
+sudo mount -a

@@ -1,0 +1,24 @@
+---menghapus java---
+sudo update-alternatives --remove-all java
+sudo update-alternatives --remove-all javac
+sudo apt purge openjdk-* -y
+sudo apt purge default-jdk -y
+sudo apt autoremove -y
+ls /usr/lib/jvm     (cek apakah masih ada java)
+nano ~/.bashrc
+(hapus ini)
+export JAVA_HOME=...
+export PATH=$JAVA_HOME/bin:...
+(tambahkan dengan versi terbaru atau yang diinginkan)
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64    (contoh vesi terbaru)
+export PATH=$JAVA_HOME/bin:$PATH
+(keluar)
+java -version
+
+
+
+---install google chrome---
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb -y
+google-chrome
+

@@ -1,0 +1,25 @@
+---instal vim---
+sudo nano /etc/apt/sources.list
+# deb cdrom:[Debian GNU/Linux 13.2.0 _Trixie_ ...] /
+deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+sudo apt update
+sudo apt install vim
+vim a.txt
+
+---kode dalam vim---
+:q
+:w
+:wq
+i
+escp
+:q!
+
+nano a.txt     Membuka dan mengedit file a.txt menggunakan editor nano.
+more a.txt     Menampilkan isi file a.txt satu layar demi satu layar.
+q        Keluar dari tampilan more atau less.
+less a.txt      /Menampilkan isi file dengan navigasi maju dan mundur./
+head a.txt      /Menampilkan 10 baris pertama dari file a.txt./
+tail a.txt      /Menampilkan 10 baris terakhir dari file a.txt./
+head -n a.txt     /Menampilkan n baris pertama dari file a.txt./
+tail -n a.txt     /Menampilkan n baris terakhir dari file a.txt./
+tail -f a.txt     /Menampilkan baris terakhir file dan memantau perubahan secara real-time./
